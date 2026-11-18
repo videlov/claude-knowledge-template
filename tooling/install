@@ -24,9 +24,10 @@ command -v gitleaks >/dev/null 2>&1 || echo "note: gitleaks not found; commits o
 # 1. Git hooks: rebuild INDEX.md, scan for secrets and apply blocked-patterns.txt on every commit.
 git -C "$repo" config core.hooksPath "$repo/tooling/githooks"
 
-# 2. The /remember skill.
+# 2. Skills: /remember and /check-upstream.
 mkdir -p "$config/skills"
 ln -sfn "$repo/tooling/skills/remember" "$config/skills/remember"
+ln -sfn "$repo/tooling/skills/check-upstream" "$config/skills/check-upstream"
 
 # 3. User CLAUDE.md: where the repo is, plus the instructions for every session.
 claude_md="$config/CLAUDE.md"

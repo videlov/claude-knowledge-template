@@ -13,10 +13,12 @@ end='<!-- knowledge-repo:end -->'
 
 git -C "$repo" config --unset core.hooksPath 2>/dev/null || true
 
-link="$config/skills/remember"
-if [ -L "$link" ] && [ "$(readlink "$link")" = "$repo/tooling/skills/remember" ]; then
-  rm "$link"
-fi
+for skill in remember check-upstream; do
+  link="$config/skills/$skill"
+  if [ -L "$link" ] && [ "$(readlink "$link")" = "$repo/tooling/skills/$skill" ]; then
+    rm "$link"
+  fi
+done
 
 claude_md="$config/CLAUDE.md"
 if [ -f "$claude_md" ]; then

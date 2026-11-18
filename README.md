@@ -14,7 +14,7 @@ every session ── loads ──▶ tooling/instructions.md + your MEMORY.md in
 - `findings/`: one durable fact per note (a finding, decision, how-to or reference).
 - `projects/`: the state of ongoing efforts, rewritten as things change.
 - `INDEX.md`: one line per note, rebuilt on every commit.
-- `tooling/`: the instructions Claude gets, the `/remember` skill, the git hook, the installer, `claude-usage`, which shows what each session costs in tokens, and `claude-context`, which shows how big the current session's context is.
+- `tooling/`: the instructions Claude gets, the `/remember` skill, the git hook, the installer, `claude-usage`, which shows what each session costs in tokens, `claude-context`, which shows how big the current session's context is, and `check-upstream`, which compares your tooling against the upstream template and offers to apply updates.
 
 The notes are plain Markdown in git, so every change can be reviewed with `git log -p`, nothing is locked into a tool, and the folder opens as an Obsidian vault. There is no database, embedding model or MCP server: Claude uses the search and read tools it already has.
 
@@ -40,6 +40,7 @@ In your Claude config folder (`$CLAUDE_CONFIG_DIR`, default `~/.claude`):
 |---|---|
 | `CLAUDE.md` | A marked block with the repo path and `@<repo>/tooling/instructions.md`, so every session knows the repo and how to use it. Your own content stays. |
 | `skills/remember` | A symlink to `tooling/skills/remember`. |
+| `skills/check-upstream` | A symlink to `tooling/skills/check-upstream`. |
 | `settings.json` | Adds the repo to `permissions.additionalDirectories`, so Claude can read it from any folder, and sets `autoMemoryDirectory` to `~/.claude-memory`, so all your folders share one auto memory. `KNOWLEDGE_MEMORY_DIR= tooling/install` leaves auto memory as it is. |
 
 In the repo it sets `core.hooksPath` to `tooling/githooks`. Running it again is safe. `tooling/uninstall` removes all of it and leaves your notes and the memory folder alone.
@@ -55,6 +56,7 @@ In the repo it sets `core.hooksPath` to `tooling/githooks`. Running it again is 
 | Stop: a chunk of work is done, or a break of more than an hour is coming | Claude hands off on its own: it updates the project note, asks you to `/clear` with the context size (tokens and % of the window) and puts a prompt for the fresh session on your clipboard; the fresh session starts from the note instead of re-reading a long conversation ([Cost in tokens](#cost-in-tokens)). Say "hand off" to trigger it yourself |
 | Change how Claude works everywhere | "From now on …" (this goes into the shared auto memory, not the repo) |
 | See what was saved | `git -C ~/knowledge log -p` |
+| Check for template updates | `/check-upstream` — compares tooling against the upstream template and offers to apply changes |
 | Browse | `INDEX.md`, or open the folder in Obsidian |
 
 ## Note format
